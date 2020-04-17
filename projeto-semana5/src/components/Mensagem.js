@@ -1,4 +1,27 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const LabeMessenger = styled.div`
+  width: 30vw;
+  height: 100vh;
+  border: 1px grey solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+`
+const InputApp = styled.input`
+  width: ${props => {
+    if(props.largura === "pequeno"){
+      return "5rem"
+    } else if(props.largura === "grande"){
+      return "18rem"
+    }
+  }};
+`
+
+const MsgEnviada = styled.div`
+  margin-left: 1rem;
+`
 
 export class Mensagem extends React.Component{
    state = {
@@ -15,7 +38,7 @@ export class Mensagem extends React.Component{
    
    envioMensagem = () => {
      const novaMensagem={
-       usuario:this.state.valorInputUsuario,
+       usuario:this.state.valorInputUsuario +  ": ",
       mensagemUsuario:this.state.ValorInputMensagem
      }
      const novasMensagens=[...this.state.mensagem,novaMensagem];
@@ -25,7 +48,7 @@ export class Mensagem extends React.Component{
    }
 
    onChangeInputUsuario = (event) => {
-     this.setState({valorInputUsuario: event.target.value });
+     this.setState({valorInputUsuario: event.target.value});
     
    }
 
@@ -39,26 +62,31 @@ export class Mensagem extends React.Component{
     const listaMensagem = this.state.mensagem.map((msg)=>{
       return(
         <p>
-        {msg.usuario}: 
-        {msg.mensagemUsuario}
+          <strong>{msg.usuario}</strong>{msg.mensagemUsuario}
         </p>
       )
     });
 
 
     return (
-        <div>
-          <div>{listaMensagem}</div>
-          <input onChange={this.onChangeInputUsuario}
+        <LabeMessenger >
+          <MsgEnviada>{listaMensagem}</MsgEnviada>
+          <div>
+          <InputApp
+            largura={"pequeno"} 
+            onChange={this.onChangeInputUsuario}
             value={this.state.valorInputUsuario}
             placeholder={"Usuário"}
           />
-           <input onChange={this.onChangeInputMensagem}
-             value={this.state.ValorInputMensagem}
-             placeholder={"Mensagem"}
+           <InputApp 
+            largura={"grande"}
+            onChange={this.onChangeInputMensagem}
+            value={this.state.ValorInputMensagem}
+            placeholder={"Mensagem"}
           />
           <button onClick={this.envioMensagem}>Enviar</button>
-        </div>
+          </div>
+        </LabeMessenger>
       );
   }
 
